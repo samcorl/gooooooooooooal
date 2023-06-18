@@ -1,19 +1,18 @@
 class StreamInput
-  attr_accessor :scoreboard, :keeper, :stream
+  attr_accessor :scoreboard, :keeper
 
-  def initialize(stream)
-    @stream = stream
+  def initialize
     @scoreboard = ScoreBoard.new
     @keeper = Keeper.new
   end
 
   def read
     begin
-        while gets
-          @keeper.line_in(scoreboard, file)
+        while line = gets
+          @keeper.line_in(scoreboard, line)
         end
-    rescue EOFError
-      # end of file reached, reporting scores
+    ensure
+      # end of stream reached, or it was interrupted
       scoreboard.render
     end
     self

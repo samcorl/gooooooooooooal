@@ -1,37 +1,36 @@
 # gooooooooooooal!
-`score_keeper.rb` reads a listing of game
-results for a soccer league as a stream and returns the top teams at
-the end of each matchday.
-
-Match days end when a 
+This application reads a listing of game
+results for a soccer league as a stream and emits to STDOUT the top three 
+teams at the end of each match day.
 
 ## Usage
 
-score_keeper.rb [FILE]
+./run.rb [FILE]
 
-It takes a file name as an optional argument.
+`run.rb` is used to run the application. 
+It takes a file path as an optional argument.
 If no argument is provided when executing the script, it will read from STDIN.
 
-### Examples
+## Examples
 
 ##### From a File
 
-`score_keeper.rb sample-input.txt`
-
-##### From an existing logfile
-`tail -f scores.log | score_keeper.rb`
+`./run.rb sample-input.txt`
 
 ##### listening on STDIN
-`score_keeper.rb`
+`./run.rb`
 
-### Input Format
+##### Piped from an existing logfile
+`tail -f scores.log | ./run.rb`
+
+## Input Format
 
 The input should be valid UTF-8 text in the following format:
-`TEAM SCORE, TEAM SCORE\n` where "TEAM" is a team name
-and "SCORE" is the score for that team in the match.
+`$TEAM $SCORE, $TEAM $SCORE\n` where `$TEAM` is a team name
+and `$SCORE` is the score for that team in the match.
 
-The input contains results of games, one per line and grouped by matchday. 
-All teams play exactly once during a matchday, for example given a 
+The input contains results of games, one per line and grouped by match day. 
+All teams play exactly once during a match day. For example, given a 
 league of six teams, each match day would consist of three games. 
 There is no delimiter required between match days. 
 
@@ -53,19 +52,20 @@ Capitola Seahorses 5, San Jose Earthquakes 5
 Santa Cruz Slugs 1, Felton Lumberjacks 1
 ```
 
-### Match Days
+## Match Days
 
 Scores are tallied and reported when the application determines 
 a match day has ended. 
 Interrupting the input or repeating a team name indicate 
 the closing of a match day.
 
-### Score Calculation
+## Score Calculation
 
 Input is read one line at a time. Team names are stored
 as they are discovered and scores calculated as a running total.
+All teams start with zero points, there is no ability to "seed" point values.
 
-##### Point Values
+## Point Values
 
 A draw (tie) is worth 1 point and a win is worth 3 points. A
 loss is worth 0 points. If two or more teams among the top three teams have
@@ -73,6 +73,27 @@ the same number of points, they will have the same rank and be printed in
 alphabetical order. That said, at most three teams should be listed in the
 output per match day.
 
+## Testing
+
+`rspec` from project root
+
+## Performance Testing
+
+A script is provided to report the CPU time reading in a large file (1M lines).
+This is provided so maintainers can test code changes for performance regression.
+
+`./spec/scripts/performance_test.rb`
 
 
+## Stream From Log Testing
+
+#### In first window
+`./spec/scripts/streamer.rb .05 10000 > stream.log`
+
+#### In second window
+`tail -f stream.log | ./run.rb`
+
+## Contact
+
+Any questions or concerns, please contact Sam Corl sam@samcorl.com
 
