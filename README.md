@@ -75,15 +75,28 @@ output per match day.
 
 ## Testing
 
-`rspec` from project root
+`rspec` from project root. I tested with Ruby 3.1.2 on Mac OS.
 
 ## Performance Testing
 
 A script is provided to report the CPU time reading in a large file (1M lines).
 This is provided so maintainers can test code changes for performance regression.
+The reported timings are in seconds.
 
 `./spec/scripts/performance_test.rb`
 
+On a Macbook from 2017 / 2.8 GHz Quad-core Intel i7 CPU, 
+the following results are reported:
+
+```
+Performance Testing
+-------------------
+Testing file: spec/sample_data/large-file.txt
+1000001 data lines
+  user       system    sum         elapsed real time
+  1.039146   1.797994  74.730817 ( 72.565576)
+
+```
 
 ## Stream From Log Testing
 
