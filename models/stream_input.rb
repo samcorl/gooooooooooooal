@@ -12,7 +12,7 @@ class StreamInput
         @keeper.line_in(scoreboard, line)
       end
     rescue Interrupt
-      puts "Interrupt caught. Please close the stream rather than sending kill signal."
+      # silencing the exception message to STDOUT
     ensure
       # end of stream reached, or it was interrupted
       scoreboard.render
