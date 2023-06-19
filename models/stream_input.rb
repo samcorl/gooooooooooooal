@@ -8,9 +8,11 @@ class StreamInput
 
   def read
     begin
-        while line = gets
-          @keeper.line_in(scoreboard, line)
-        end
+      while line = gets
+        @keeper.line_in(scoreboard, line)
+      end
+    rescue Interrupt
+      puts "Interrupt caught. Please close the stream rather than sending kill signal."
     ensure
       # end of stream reached, or it was interrupted
       scoreboard.render
